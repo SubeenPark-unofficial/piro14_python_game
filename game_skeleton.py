@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import random
 
 
@@ -9,8 +10,7 @@ ______  _____  _   __ _____  _    _   ___   _   _  _____
 | |    \\ \\_/ /| |\\  \\| |___ \\  /\\  /| | | || |\\  || |_\\ \\
 \\_|     \\___/ \\_| \\_/\\____/  \\/  \\/ \\_| |_/\\_| \\_/ \\____/ 
 
----------------- Hit ENTER to start game. ---------------- 
-
+--------------- Hit ENTER to start game. --------------- 
 """
 
 
@@ -20,14 +20,17 @@ class Player:
         self.name = name
         self.monster_list = monster_list
 
-    def displayMonsterList(self):
         # TODO 3-1: player의 현재 monster_list를 출력
+    def displayMonsterList(self):
         for i, monster in enumerate(self.monster_list):
-            print(f"[{i+1}] ", end="")
+            print(f"[{i+1}]", end="")
             monster.printMonster()
 
-    def selectMonster(self):
-        choice = int(input('출전시킬 몬스터를 선택하세요.'))
+    def selectMonster(self): 
+        print('------------------- Select Monster -------------------- ')
+        choice = int(input())
+        print(f'당신은 {choice}번째 몬스터를 선택했습니다 ')
+        print()
         return self.monster_list[choice-1]
 
     def renewMonsterList(self):
@@ -86,10 +89,12 @@ class UI:
     @staticmethod
     def getUserName():
         # TODO 2-1 : console input을 통해 사용자의 이름을 받아 return
-        return input("플레이어의 이름을 입력하세요: ")
+        
+        return input("Player name: ")
 
     def printMonsterList(self):
         # TODO 2-2 : 선택 가능한 몬스터 리스트 출력
+        print('-------------------- Monster Lists --------------------- ')
         for i, monster in enumerate(self.monsters_available):
             print(f"[{i+1}] ", end="")
             monster.printMonster()
@@ -97,7 +102,9 @@ class UI:
     def getMonsterList(self):
         # TODO 2-3 : 사용자가 선택한 몬스터를 담은 리스트를 반환
         self.printMonsterList()
-        user_choice = map(int, input("몬스터를 다섯 마리 선택하세요.").split())
+        print()
+        print('----------------- Select Monster List -----------------')
+        user_choice = map(int, input("몬스터 다섯 마리를 선택하세요:").split())
         return [self.monsters_available[idx-1] for idx in user_choice]
 
     def initPlayer(self):
@@ -106,9 +113,11 @@ class UI:
 
     def registerPlayers(self):
         # TODO 2-5: self.player1과 self.player2 설정
-        print('사용자 1 설정')
+        print()
+        print('----------------- Insert Player1 name ------------------ ')
         self.player1 = self.initPlayer()
-        print('사용자 2 설정')
+        print()
+        print('----------------- Insert Player2 name ----------------- ')
         self.player2 = self.initPlayer()
 
     # TODO 3: 라운드 시작을 위해 player 별로 몬스터를 선택하고 랜덤 카드를 오픈
@@ -138,10 +147,13 @@ class UI:
         # return [[monster1, card1], [monster2, card2]]
         monster1 = self.selectMonster(self.player1)
         monster2 = self.selectMonster(self.player2)
-        print(f'{self.player1.name}의 랜덤카드: ', end="")
+        print('-------------------랜덤카드의 정보---------------------')
+        print(f'{self.player1.name}의 랜덤카드', end='')
         card1 = self.openRandomCard()
-        print(f'{self.player2.name}의 랜덤카드: ', end="")
+        print(f'{self.player2.name}의 랜덤카드', end='')
         card2 = self.openRandomCard()
+        print()
+        print()
         return [[monster1, card1], [monster2, card2]]
 
     @staticmethod
@@ -163,17 +175,21 @@ class UI:
         # use printMonster
         # use return from battle(monsterPair)
         if monster_pair[0].hp == 0 and monster_pair[1].hp == 0:
+            print('--------------------전투결과 정보----------------------')
             print("player1,2의 몬스터가 전투결과 모두 사망하였습니다. ㅠㅅㅠ")
         elif monster_pair[0].hp == 0:
+            print('--------------------전투결과 정보----------------------')
             print("player 1의 몬스터가 전투결과 사망하였습니다. ㅠㅠ")
             print("전투를 마친 player2의 몬스터의 정보가 업데이트됩니다.")
             monster_pair[1].printMonster()
         elif monster_pair[1].hp == 0:
+            print('--------------------전투결과 정보----------------------')
             print("player 2의 몬스터가 전투결과 사망하였습니다. ㅠㅠ")
             print("전투를 마친 player1의 몬스터의 정보가 업데이트됩니다.")
             monster_pair[0].printMonster()
         else:
-            print("전투를 마친 player1,2의 몬스터의 정보가 업데이트됩니다.")
+            print('--------------------전투결과 정보----------------------')
+            print("전투를 마친 player1,2의 몬스터의 정보가 업1데이트됩니다.")
             monster_pair[0].printMonster()
             monster_pair[1].printMonster()
         self.player1.renewMonsterList()
@@ -194,7 +210,8 @@ class UI:
         battleresult = self.battle(self.initRound())
         self.printResult(battleresult)
         if not self.endOfGame():
-            print("게임을 계속 진행합니다.")
+            print("--------------------다음 라운드 진행-------------------")
+            print()
             return False
         else:
             print("남아있는 몬스터가 없습니다. 게임을 종료합니다!")
