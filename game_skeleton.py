@@ -1,3 +1,6 @@
+import random
+
+
 title_text = """
 ______  _____  _   __ _____  _    _   ___   _   _  _____ 
 | ___ \\|  _  || | / /|  ___|| |  | | / _ \\ | \\ | ||  __ \\
@@ -17,6 +20,23 @@ class Player:
         self.name = name
         self.monster_list = monster_list
 
+    def displayMonsterList(self):
+        # TODO 3-1: player의 현재 monster_list를 출력
+        for i, monster in enumerate(self.monster_list):
+            print(f"[{i+1}] ", end="")
+            monster.printMonster()
+
+    def selectMonster(self):
+        choice = int(input('출전시킬 몬스터를 선택하세요.'))
+        return self.monster_list[choice-1]
+
+    def renewMonsterList(self):
+        new_monster_list = []
+        for monster in self.monster_list:
+            if monster.hp != 0:
+                new_monster_list.append(monster)
+        self.monster_list = new_monster_list
+
 
 class Monster:
 
@@ -27,131 +47,101 @@ class Monster:
         self.hp = hp
         
     def printMonster(self):
-        for i in range(10):
-            print(f'몬스터 이름:{self[i].name}, 몬스터 공격력:{self[i].attack_power}, 몬스터 체력:{self[i].hp}')
-        #! 이거 하는데 1시간30분 걸렸는데 예쁘게는 못했어
-        UI.getMonsterList(monster_list)
+        print(f'몬스터 이름:{self.name}, 몬스터 공격력:{self.attack_power}, 몬스터 체력:{self.hp}')
 
 
 class Card:
 
-    def __init__(self, card_type):
-        self.card_type = card_type
+    def __init__(self, probability):
+        self.card_type = probability
 
     def printCard(self):
         # TODO 3-3: 카드 정보 출력
-        return
+        print(f'카드 유형: 공격력을 {self.card_type}배 증가!')
 
 
 class UI:
 
-    def __init__(self):
+    def __init__(self, monsters_candidate, random_cards):
         # TODO 1: random_cards 리스트 채우
-        self.random_cards = []
+        self.random_cards = random_cards
         self.player1 = None
         self.player2 = None
+        self.monsters_available = monsters_candidate
 
     def startGame(self):
         # TODO 1: 사용자가 0을 누르면 게임 종료, 1을 누르면 사용자 등록으로 이동
         user_input = int(input('0을 누르면 게임종료, 1을 누르면 사용자 등록으로 이동'))
-        if user_input == 0 :
-            print('게임이 끝났어요')
-            #! 게임 끝나는 함수 구현 아직 못함
-        return self.getUserName()
-        return
+
+        while user_input != 0:
+            if user_input == 1:
+                self.registerPlayers()
+                self.playGame()
+            else:
+                user_input = int(input('0을 누르면 게임종료, 1을 누르면 사용자 등록으로 이동'))
+
+        print("게임이 끝났어요")
 
     # TODO 2: self.player1과 self.player2를 설정하는 것이 목표!
-    def getUserName(self):
+    @staticmethod
+    def getUserName():
         # TODO 2-1 : console input을 통해 사용자의 이름을 받아 return
-        name1, name2 = map(str,input().split()) 
-        self.printMonsterList()
-        return name1, name2
+        return input("플레이어의 이름을 입력하세요: ")
 
     def printMonsterList(self):
         # TODO 2-2 : 선택 가능한 몬스터 리스트 출력
-        Monster.printMonster(monster_list)
+        for i, monster in enumerate(self.monsters_available):
+            print(f"[{i+1}] ", end="")
+            monster.printMonster()
 
     def getMonsterList(self):
         # TODO 2-3 : 사용자가 선택한 몬스터를 담은 리스트를 반환
-        user1_choice = []
-        user2_choice = []
-        user1_list = []
-        user2_list = []
-        
-        user1_choice = input('5개를 선택하세요').split()
-        user2_choice = input('5개를 선택하세요').split()
-        
-        for i in range(5):
-            for j in range(10):
-                if user1_choice[i] == monster_list[j].name:
-                    user1_list.append(user1_choice[i])
-                if user2_choice[i] == monster_list[j].name:
-                    user2_list.append(user2_choice[i])
-        print(user1_list)
-        print(user2_list)
-        # ! 여기서 멈췄어...
+        self.printMonsterList()
+        user_choice = map(int, input("몬스터를 다섯 마리 선택하세요.").split())
+        return [self.monsters_available[id-1] for id in user_choice]
 
     def initPlayer(self):
         # TODO 2-4 : 이름과 monster_list가 설정된 Player 객체 반환
-        # use method getUserName
-        # use method getMonsterList
-        # return player
-        return
+        return Player(self.getUserName(), self.getMonsterList())
 
     def registerPlayers(self):
         # TODO 2-5: self.player1과 self.player2 설정
-        # use method initPlayer
-        return
+        print('사용자 1 설정')
+        self.player1 = self.initPlayer()
+        print('사용자 2 설정')
+        self.player2 = self.initPlayer()
 
-        # TODO 3: 라운드 시작을 위해 player 별로 몬스터를 선택하고 랜덤 카드를 오픈
-        def displayMonsterList(self, player_num):
-            # TODO 3-1: player의 현재 monster_list를 출력
-            if player_num == 1:
-                print(player_num, 'player의 현재 monster list는', monster_list, '입니다.')
-            else:
-                print(player_num, 'player의 현재 monster list는', monster_list, '입니다.')
-            return
+    # TODO 3: 라운드 시작을 위해 player 별로 몬스터를 선택하고 랜덤 카드를 오픈
 
-        def selectMonster(self, player_num):
-            # TODO 3-2: 사용자 입력을 받아 이번 판에 출전시킬 몬스터 정보를 출력 후 해당 몬스터를 반환
-            # use displayMonsterList
-            # use class Monster-printMonster
-            # return monster
-            print('출전시킬 몬스터를 선택하세요.')
-            choose = int(input)
-            if player_num == 1:
-                monster1 = monster_list[choose]
-                return monster1
-            else:
-                monster2 = monster_list[choose]
-                return monster2
+    def selectMonster(self, player):
+        # TODO 3-2: 사용자 입력을 받아 이번 판에 출전시킬 몬스터 정보를 출력 후 해당 몬스터를 반환
+        # use displayMonsterList
+        # return monster
+        print(player.name)
+        player.displayMonsterList()
+        monster = player.selectMonster()
+        return monster
 
-        def openRandomCard(self, player_num):
-            # TODO 3-3: self.random_cards에서 랜덤하게 한 카드를 골라 정보를 출력 후 해당 카드를 반환
-            # use class Card-printCard
-            # return card
-            self.random_cards = card
-            card = random.choice(card_type)
-            Card.printCard()
-            if player_num == 1:
-                card1 = card
-                return card1
+    def openRandomCard(self):
+        # TODO 3-3: self.random_cards에서 랜덤하게 한 카드를 골라 정보를 출력 후 해당 카드를 반환
+        # use class Card-printCard
+        # return card
+        card = random.choice(self.random_cards)
+        card.printCard()
+        return card
 
-    else:
-    card2 = card
-    return card2
-
-
-def initRound(self):
-    # TODO 3-4: player1, 2 각각이 선택한 몬스터와 오픈한 랜덤카드 쌍을 반환
-    # use selectMonster
-    # use openRandomCard
-    # return [[monster1, card1], [monster2, card2]]
-    monster1 = selectMonster(1)
-    monster2 = selectMonster(1)
-    card1 = openRandomCard(1)
-    card2 = openRandomCard(2)
-    return [[monster1, card1], [monster2, card2]]
+    def initRound(self):
+        # TODO 3-4: player1, 2 각각이 선택한 몬스터와 오픈한 랜덤카드 쌍을 반환
+        # use selectMonster
+        # use openRandomCard
+        # return [[monster1, card1], [monster2, card2]]
+        monster1 = self.selectMonster(self.player1)
+        monster2 = self.selectMonster(self.player2)
+        print(f'{self.player1.name}의 랜덤카드: ', end="")
+        card1 = self.openRandomCard()
+        print(f'{self.player2.name}의 랜덤카드: ', end="")
+        card2 = self.openRandomCard()
+        return [[monster1, card1], [monster2, card2]]
 
     def battle(self, game_info):
         # TODO 4-1: 랜덤카드의 효과를 고려해 monster들의 hp를 수정, 이 때 hp <= 0일 경우 그냥 0으로 고정. 플레이 후 몬스터들을 반환
@@ -184,14 +174,16 @@ def initRound(self):
             print("전투를 마친 player1,2의 몬스터의 정보가 업데이트됩니다.")
             monster_pair[0].printMonster()
             monster_pair[1].printMonster()
+        self.player1.renewMonsterList()
+        self.player2.renewMonsterList()
 
     def endOfGame(self):
         # TODO 4-3: 다음 라운드를 위해 player의 monster_list에 몬스터가 남아있는지 확인후 게임을 계속해도 되면 true, 아니면 false 반환
         # return True/False
-        if self.player1.monster_list == [] or self.player2.monster_list == []:
-            return False
-        else:
+        if len(self.player1.monster_list) == 0 or len(self.player2.monster_list) == 0:
             return True
+        else:
+            return False
 
     def playRound(self):
 
@@ -199,11 +191,12 @@ def initRound(self):
         # use battle/printResult/endOfGame
         battleresult = self.battle(self.initRound())
         self.printResult(battleresult)
-        if self.endOfGame:
+        if not self.endOfGame():
             print("게임을 계속 진행합니다.")
+            return False
         else:
             print("남아있는 몬스터가 없습니다. 게임을 종료합니다!")
-
+            return True
         # TODO 5: 승패가 갈릴때까지 라운드를 반복;
 
     def printFinalResult(self):
@@ -218,42 +211,41 @@ def initRound(self):
         # 몬스터가 더 적은쪽(아마 0개인 쪽)이 패자
         if p1_length < p2_length:
             # 승자
-            print(f"승자:{p2.name}, 남은 몬스터:{p2.monster_list}")
+            print(f"승자:{p2.name}")
+            p2.displayMonsterList()
+
             # 패자
-            print(f"패자:{p1.name}, 남은 몬스터:{p1.monster_list}")
+            print(f"패자:{p1.name}")
+            p1.displayMonsterList()
+
         elif p2_length < p1_length:
             # 승자
-            print(f"승자:{p1.name}, 남은 몬스터:{p1.monster_list}")
+            print(f"승자:{p1.name}")
+            p1.displayMonsterList()
+
             # 패자
-            print(f"패자:{p2.name}, 남은 몬스터:{p2.monster_list}")
+            print(f"패자:{p2.name}")
+            p2.displayMonsterList()
+
         else:
             print("무승부")
-            print(f"플레이어1:{p1.name}, 남은 몬스터:{p1.monster_list}")
-            print(f"플레이어2:{p2.name}, 남은 몬스터:{p2.monster_list}")
+            print(f"플레이어1:{p1.name}")
+            p1.displayMonsterList
+            print(f"플레이어1:{p2.name}")
+            p2.displayMonsterList
 
         # TODO 5-1: 승자와 패자를 출력. 게임 종료 당시 남아있는 포켓몬의 리스트를 출력
         # return
 
     def playGame(self):
-        while True:
-            play = self.playRound()  # playRound()에서 False나 True를 반환하는 경우=playRound()에서 endOfGame()의 결과를 반환해주는 경우
+        play = False
+        while not play:
+            play = self.playRound()
+        self.printFinalResult()
 
-            # self.playRound()
-            # end = self.endOfGame() -->이건 혹시나 playRound()에서 endOfGame()결과를 반환하지 않는 경우를 대비해서 써봄
-
-            if play == False:  # 게임을 더 진행할 수 없으면
-                self.printFinalResult()  # 최종 결과 출력
-                break
-
-        # TODO 5-2: 승패가 갈릴때까지 라운드를 반
-        # use playRound
-        # use printFinalResult
-        # return
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     # TODO 1: 게임 실행 -> 종료 시 새로운 게임 여부 확인 반복
-    monster_list = [Monster("A",30, 100),
+    monsters_available = [Monster("A",30, 100),
                    Monster("B",30, 150),
                    Monster("C",40, 300),
                    Monster("D",50, 100),
@@ -262,8 +254,7 @@ if __name__ == "__main__":
                    Monster("G",40, 300),
                    Monster("H",50, 200),
                    Monster("I",30, 250),
-                   Monster("J",20, 150),
-                   ]
+                   Monster("J",20, 150) ]
     
     card_type = [Card(3.0),
                 Card(1.5),
@@ -274,13 +265,9 @@ if __name__ == "__main__":
                 Card(2.5),
                 Card(1.7),
                 Card(1.5),
-                Card(0.8),
-                ]
+                Card(0.8)]
     
     print(title_text)
-    ui = UI()
+    ui = UI(monsters_available, card_type)
     ui.startGame()
     
-    
-    # ? 한 부분 : todo 1, todo2-1, todo2-2, todo2-3
-    # ! 못한 부분 : todo 1(random 카드 채우기), todo 2-4, todo 2-5 
