@@ -20,13 +20,17 @@ class Player:
 
 class Monster:
 
-    def __init__(self, attack_power, hp):
+    def __init__(self, name, attack_power, hp):
+        # ? 새로 추가한 몬스터 이름
+        self.name = name
         self.attack_power = attack_power
         self.hp = hp
-
+        
     def printMonster(self):
-        # TODO 3-2: 몬스터 정보 출력
-        return
+        for i in range(10):
+            print(f'몬스터 이름:{self[i].name}, 몬스터 공격력:{self[i].attack_power}, 몬스터 체력:{self[i].hp}')
+        #! 이거 하는데 1시간30분 걸렸는데 예쁘게는 못했어
+        UI.getMonsterList(monster_list)
 
 
 class Card:
@@ -49,22 +53,43 @@ class UI:
 
     def startGame(self):
         # TODO 1: 사용자가 0을 누르면 게임 종료, 1을 누르면 사용자 등록으로 이동
+        user_input = int(input('0을 누르면 게임종료, 1을 누르면 사용자 등록으로 이동'))
+        if user_input == 0 :
+            print('게임이 끝났어요')
+            #! 게임 끝나는 함수 구현 아직 못함
+        return self.getUserName()
         return
 
     # TODO 2: self.player1과 self.player2를 설정하는 것이 목표!
     def getUserName(self):
         # TODO 2-1 : console input을 통해 사용자의 이름을 받아 return
-        return
+        name1, name2 = map(str,input().split()) 
+        self.printMonsterList()
+        return name1, name2
 
     def printMonsterList(self):
         # TODO 2-2 : 선택 가능한 몬스터 리스트 출력
-        return
+        Monster.printMonster(monster_list)
 
     def getMonsterList(self):
         # TODO 2-3 : 사용자가 선택한 몬스터를 담은 리스트를 반환
-        # use method printMonsterList
-        # return monster_list
-        return
+        user1_choice = []
+        user2_choice = []
+        user1_list = []
+        user2_list = []
+        
+        user1_choice = input('5개를 선택하세요').split()
+        user2_choice = input('5개를 선택하세요').split()
+        
+        for i in range(1):
+            for j in range(10):
+                if user1_choice[i] == monster_list[j].name:
+                    user1_list.append(user1_choice[i])
+                if user2_choice[i] == monster_list[j].name:
+                    user2_list.append(user2_choice[i])
+        print(user1_list)
+        print(user2_list)
+        # ! 여기서 멈췄어...
 
     def initPlayer(self):
         # TODO 2-4 : 이름과 monster_list가 설정된 Player 객체 반환
@@ -142,6 +167,34 @@ class UI:
 
 if __name__ == "__main__":
     # TODO 1: 게임 실행 -> 종료 시 새로운 게임 여부 확인 반복
-    # use class UI
-    # use startGame, playGame
+    monster_list = [Monster("A",30, 100),
+                   Monster("B",30, 150),
+                   Monster("C",40, 300),
+                   Monster("D",50, 100),
+                   Monster("E",30, 150),
+                   Monster("F",30, 100),
+                   Monster("G",40, 300),
+                   Monster("H",50, 200),
+                   Monster("I",30, 250),
+                   Monster("J",20, 150),
+                   ]
+    
+    card_type = [Card(3.0),
+                Card(1.5),
+                Card(2.0),
+                Card(1.4),
+                Card(0.2),
+                Card(0.3),
+                Card(2.5),
+                Card(1.7),
+                Card(1.5),
+                Card(0.8),
+                ]
+    
     print(title_text)
+    ui = UI()
+    ui.startGame()
+    
+    
+    # ? 한 부분 : todo 1, todo2-1, todo2-2, todo2-3
+    # ! 못한 부분 : todo 1(random 카드 채우기), todo 2-4, todo 2-5 
