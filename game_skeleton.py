@@ -148,9 +148,9 @@ class UI:
         monster1 = self.selectMonster(self.player1)
         monster2 = self.selectMonster(self.player2)
         print('-------------------랜덤카드의 정보---------------------')
-        print(f'{self.player1.name}의 랜덤카드', end='')
+        print(f'{self.player1.name}의 랜덤', end='')
         card1 = self.openRandomCard()
-        print(f'{self.player2.name}의 랜덤카드', end='')
+        print(f'{self.player2.name}의 랜덤', end='')
         card2 = self.openRandomCard()
         print()
         print()
@@ -254,7 +254,7 @@ class UI:
             p2.displayMonsterList()
 
         # TODO 5-1: 승자와 패자를 출력. 게임 종료 당시 남아있는 포켓몬의 리스트를 출력
-        # return
+        return
 
     def playGame(self):
         play = False
