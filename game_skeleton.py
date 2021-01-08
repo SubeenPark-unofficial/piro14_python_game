@@ -155,7 +155,7 @@ class UI:
     #TODO 5: 승패가 갈릴때까지 라운드를 반복;
 
     def printFinalResult(self):
-        #p1,p2 = 플레이어 정보  ---> 이렇게 하면 그냥 초기정보가 출력되나..?만약 그러면 나중에 고치겠슴니다ㅎㅎ
+        #p1,p2 = 플레이어 정보  ---> 위에 printResult에서 결과가 매번 저장될거라고 예상하고 쓴거라 만약 그냥 초기값이 출력되면,,나중에 고쳐보겟슴니다,,
         p1 = self.player1
         p2 = self.player2
 
@@ -184,10 +184,10 @@ class UI:
 
     def playGame(self):
         while True:
-            play = self.playRound() #playRound()에서 False나 True를 반환하는 경우
+            play = self.playRound() #playRound()에서 False나 True를 반환하는 경우=playRound()에서 endOfGame()의 결과를 반환해주는 경우
 
             #self.playRound()
-            #end = self.endOfGame() -->이건 혹시나 playRound()에서 endOfGame()결과를 반환하지 않는 경우
+            #end = self.endOfGame() -->이건 혹시나 playRound()에서 endOfGame()결과를 반환하지 않는 경우를 대비해서 써봄
 
             if play == False: #게임을 더 진행할 수 없으면
                 self.printFinalResult() #최종 결과 출력
