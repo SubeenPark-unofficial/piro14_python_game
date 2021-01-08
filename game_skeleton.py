@@ -128,29 +128,56 @@ class UI:
         # return [[monster1, card1], [monster2, card2]]
         return
 
-    # TODO 4: 한 라운드 플레
-
     def battle(self, game_info):
         # TODO 4-1: 랜덤카드의 효과를 고려해 monster들의 hp를 수정, 이 때 hp <= 0일 경우 그냥 0으로 고정. 플레이 후 몬스터들을 반환
         # use result from initRound(gameInfo)
         # return [monster1, monster2]
-        return
+
+        game_info[0][0].hp -= game_info[1][0].attack_power * game_info[1][1].card_type
+        game_info[1][0].hp -= game_info[0][0].attack_power * game_info[0][1].card_type
+        for i in range(2):
+            if game_info[i][0].hp <= 0:
+                game_info[i][0].hp = 0
+
+        return [game_info[0][0], game_info[1][0]]
 
     def printResult(self, monster_pair):
         # TODO 4-2: 게임 결과 출력. 게임 후 monster 정보(죽었을 경우 죽었다고 출력)
         # use printMonster
         # use return from battle(monsterPair)
-        return
+        if monster_pair[0].hp == 0 and monster_pair[1].hp == 0:
+            print("player1,2의 몬스터가 전투결과 모두 사망하였습니다. ㅠㅅㅠ")
+        elif monster_pair[0].hp == 0:
+            print("player 1의 몬스터가 전투결과 사망하였습니다. ㅠㅠ")
+            print("전투를 마친 player2의 몬스터의 정보가 업데이트됩니다.")
+            monster_pair[1].printMonster()
+        elif monster_pair[1].hp == 0:
+            print("player 2의 몬스터가 전투결과 사망하였습니다. ㅠㅠ")
+            print("전투를 마친 player1의 몬스터의 정보가 업데이트됩니다.")
+            monster_pair[0].printMonster()
+        else:
+            print("전투를 마친 player1,2의 몬스터의 정보가 업데이트됩니다.")
+            monster_pair[0].printMonster()
+            monster_pair[1].printMonster()
 
     def endOfGame(self):
         # TODO 4-3: 다음 라운드를 위해 player의 monster_list에 몬스터가 남아있는지 확인후 게임을 계속해도 되면 true, 아니면 false 반환
         # return True/False
-        return
+        if self.player1.monster_list == [] or self.player2.monster_list == []:
+            return False
+        else:
+            return True
 
     def playRound(self):
+
         # TODO 4-4: 한 라운드를 실행
         # use battle/printResult/endOfGame
-        return
+        battleresult = self.battle(self.initRound())
+        self.printResult(battleresult)
+        if self.endOfGame:
+            print("게임을 계속 진행합니다.")
+        else:
+            print("남아있는 몬스터가 없습니다. 게임을 종료합니다!")
 
     # TODO 5: 승패가 갈릴때까지 라운드를 반복
 
