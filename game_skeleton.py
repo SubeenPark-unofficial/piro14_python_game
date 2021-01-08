@@ -103,30 +103,55 @@ class UI:
         # use method initPlayer
         return
 
-    # TODO 3: 라운드 시작을 위해 player 별로 몬스터를 선택하고 랜덤 카드를 오픈
-    def displayMonsterList(self, player_num):
-        # TODO 3-1: player의 현재 monster_list를 출력
-        return
+        # TODO 3: 라운드 시작을 위해 player 별로 몬스터를 선택하고 랜덤 카드를 오픈
+        def displayMonsterList(self, player_num):
+            # TODO 3-1: player의 현재 monster_list를 출력
+            if player_num == 1:
+                print(player_num, 'player의 현재 monster list는', monster_list, '입니다.')
+            else:
+                print(player_num, 'player의 현재 monster list는', monster_list, '입니다.')
+            return
 
-    def selectMonster(self, player_num):
-        # TODO 3-2: 사용자 입력을 받아 이번 판에 출전시킬 몬스터 정보를 출력 후 해당 몬스터를 반환
-        # use displayMonsterList
-        # use class Monster-printMonster
-        # return monster
-        return
+        def selectMonster(self, player_num):
+            # TODO 3-2: 사용자 입력을 받아 이번 판에 출전시킬 몬스터 정보를 출력 후 해당 몬스터를 반환
+            # use displayMonsterList
+            # use class Monster-printMonster
+            # return monster
+            print('출전시킬 몬스터를 선택하세요.')
+            choose = int(input)
+            if player_num == 1:
+                monster1 = monster_list[choose]
+                return monster1
+            else:
+                monster2 = monster_list[choose]
+                return monster2
 
-    def openRandomCard(self, player_num):
-        # TODO 3-3: self.random_cards에서 랜덤하게 한 카드를 골라 정보를 출력 후 해당 카드를 반환
-        # use class Card-printCard
-        # return card
-        return
+        def openRandomCard(self, player_num):
+            # TODO 3-3: self.random_cards에서 랜덤하게 한 카드를 골라 정보를 출력 후 해당 카드를 반환
+            # use class Card-printCard
+            # return card
+            self.random_cards = card
+            card = random.choice(card_type)
+            Card.printCard()
+            if player_num == 1:
+                card1 = card
+                return card1
 
-    def initRound(self):
-        # TODO 3-4: player1, 2 각각이 선택한 몬스터와 오픈한 랜덤카드 쌍을 반환
-        # use selectMonster
-        # use openRandomCard
-        # return [[monster1, card1], [monster2, card2]]
-        return
+    else:
+    card2 = card
+    return card2
+
+
+def initRound(self):
+    # TODO 3-4: player1, 2 각각이 선택한 몬스터와 오픈한 랜덤카드 쌍을 반환
+    # use selectMonster
+    # use openRandomCard
+    # return [[monster1, card1], [monster2, card2]]
+    monster1 = selectMonster(1)
+    monster2 = selectMonster(1)
+    card1 = openRandomCard(1)
+    card2 = openRandomCard(2)
+    return [[monster1, card1], [monster2, card2]]
 
     def battle(self, game_info):
         # TODO 4-1: 랜덤카드의 효과를 고려해 monster들의 hp를 수정, 이 때 hp <= 0일 경우 그냥 0으로 고정. 플레이 후 몬스터들을 반환
