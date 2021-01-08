@@ -74,12 +74,13 @@ class UI:
 
     def startGame(self):
         # TODO 1: 사용자가 0을 누르면 게임 종료, 1을 누르면 사용자 등록으로 이동
-        user_input = int(input('0을 누르면 게임종료, 1을 누르면 사용자 등록으로 이동'))
+        user_input = int(input('\n' + "="*20 + '0을 누르면 게임종료, 1을 누르면 사용자 등록으로 이동' + "="*20 + '\n'  ))
 
         while user_input != 0:
             if user_input == 1:
                 self.registerPlayers()
                 self.playGame()
+                self.startGame()
             else:
                 user_input = int(input('0을 누르면 게임종료, 1을 누르면 사용자 등록으로 이동'))
 
@@ -261,6 +262,7 @@ class UI:
         while not play:
             play = self.playRound()
         self.printFinalResult()
+        return
 
 
 if __name__ == '__main__':
