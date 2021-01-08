@@ -204,47 +204,47 @@ def initRound(self):
         else:
             print("남아있는 몬스터가 없습니다. 게임을 종료합니다!")
 
-    #TODO 5: 승패가 갈릴때까지 라운드를 반복;
+        # TODO 5: 승패가 갈릴때까지 라운드를 반복;
 
     def printFinalResult(self):
-        #p1,p2 = 플레이어 정보  ---> 위에 printResult에서 결과가 매번 저장될거라고 예상하고 쓴거라 만약 그냥 초기값이 출력되면,,나중에 고쳐보겟슴니다,,
+        # p1,p2 = 플레이어 정보  ---> 위에 printResult에서 결과가 매번 저장될거라고 예상하고 쓴거라 만약 그냥 초기값이 출력되면,,나중에 고쳐보겟슴니다,,
         p1 = self.player1
         p2 = self.player2
 
-        #각 플레이어의 몬스터가 몇개 남았는지 저장
-        p1_length = len(p1.monster_list) 
+        # 각 플레이어의 몬스터가 몇개 남았는지 저장
+        p1_length = len(p1.monster_list)
         p2_length = len(p2.monster_list)
 
-        #몬스터가 더 적은쪽(아마 0개인 쪽)이 패자
+        # 몬스터가 더 적은쪽(아마 0개인 쪽)이 패자
         if p1_length < p2_length:
-            #승자
+            # 승자
             print(f"승자:{p2.name}, 남은 몬스터:{p2.monster_list}")
-            #패자
+            # 패자
             print(f"패자:{p1.name}, 남은 몬스터:{p1.monster_list}")
         elif p2_length < p1_length:
-            #승자
+            # 승자
             print(f"승자:{p1.name}, 남은 몬스터:{p1.monster_list}")
-            #패자
+            # 패자
             print(f"패자:{p2.name}, 남은 몬스터:{p2.monster_list}")
         else:
-            print("무승부") 
+            print("무승부")
             print(f"플레이어1:{p1.name}, 남은 몬스터:{p1.monster_list}")
             print(f"플레이어2:{p2.name}, 남은 몬스터:{p2.monster_list}")
-            
+
         # TODO 5-1: 승자와 패자를 출력. 게임 종료 당시 남아있는 포켓몬의 리스트를 출력
-        #return 
+        # return
 
     def playGame(self):
         while True:
-            play = self.playRound() #playRound()에서 False나 True를 반환하는 경우=playRound()에서 endOfGame()의 결과를 반환해주는 경우
+            play = self.playRound()  # playRound()에서 False나 True를 반환하는 경우=playRound()에서 endOfGame()의 결과를 반환해주는 경우
 
-            #self.playRound()
-            #end = self.endOfGame() -->이건 혹시나 playRound()에서 endOfGame()결과를 반환하지 않는 경우를 대비해서 써봄
+            # self.playRound()
+            # end = self.endOfGame() -->이건 혹시나 playRound()에서 endOfGame()결과를 반환하지 않는 경우를 대비해서 써봄
 
-            if play == False: #게임을 더 진행할 수 없으면
-                self.printFinalResult() #최종 결과 출력
+            if play == False:  # 게임을 더 진행할 수 없으면
+                self.printFinalResult()  # 최종 결과 출력
                 break
-        
+
         # TODO 5-2: 승패가 갈릴때까지 라운드를 반
         # use playRound
         # use printFinalResult
