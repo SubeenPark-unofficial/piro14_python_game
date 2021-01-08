@@ -81,7 +81,7 @@ class UI:
         user1_choice = input('5개를 선택하세요').split()
         user2_choice = input('5개를 선택하세요').split()
         
-        for i in range(1):
+        for i in range(5):
             for j in range(10):
                 if user1_choice[i] == monster_list[j].name:
                     user1_list.append(user1_choice[i])
