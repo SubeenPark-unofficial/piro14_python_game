@@ -98,7 +98,7 @@ class UI:
         # TODO 2-3 : 사용자가 선택한 몬스터를 담은 리스트를 반환
         self.printMonsterList()
         user_choice = map(int, input("몬스터를 다섯 마리 선택하세요.").split())
-        return [self.monsters_available[id-1] for id in user_choice]
+        return [self.monsters_available[idx-1] for idx in user_choice]
 
     def initPlayer(self):
         # TODO 2-4 : 이름과 monster_list가 설정된 Player 객체 반환
@@ -113,7 +113,8 @@ class UI:
 
     # TODO 3: 라운드 시작을 위해 player 별로 몬스터를 선택하고 랜덤 카드를 오픈
 
-    def selectMonster(self, player):
+    @staticmethod
+    def selectMonster(player):
         # TODO 3-2: 사용자 입력을 받아 이번 판에 출전시킬 몬스터 정보를 출력 후 해당 몬스터를 반환
         # use displayMonsterList
         # return monster
@@ -143,7 +144,8 @@ class UI:
         card2 = self.openRandomCard()
         return [[monster1, card1], [monster2, card2]]
 
-    def battle(self, game_info):
+    @staticmethod
+    def battle(game_info):
         # TODO 4-1: 랜덤카드의 효과를 고려해 monster들의 hp를 수정, 이 때 hp <= 0일 경우 그냥 0으로 고정. 플레이 후 몬스터들을 반환
         # use result from initRound(gameInfo)
         # return [monster1, monster2]
@@ -230,9 +232,9 @@ class UI:
         else:
             print("무승부")
             print(f"플레이어1:{p1.name}")
-            p1.displayMonsterList
+            p1.displayMonsterList()
             print(f"플레이어1:{p2.name}")
-            p2.displayMonsterList
+            p2.displayMonsterList()
 
         # TODO 5-1: 승자와 패자를 출력. 게임 종료 당시 남아있는 포켓몬의 리스트를 출력
         # return
@@ -243,31 +245,31 @@ class UI:
             play = self.playRound()
         self.printFinalResult()
 
+
 if __name__ == '__main__':
     # TODO 1: 게임 실행 -> 종료 시 새로운 게임 여부 확인 반복
-    monsters_available = [Monster("A",30, 100),
-                   Monster("B",30, 150),
-                   Monster("C",40, 300),
-                   Monster("D",50, 100),
-                   Monster("E",30, 150),
-                   Monster("F",30, 100),
-                   Monster("G",40, 300),
-                   Monster("H",50, 200),
-                   Monster("I",30, 250),
-                   Monster("J",20, 150) ]
+    monsters_available = [Monster("A", 30, 100),
+                          Monster("B", 30, 150),
+                          Monster("C", 40, 300),
+                          Monster("D", 50, 100),
+                          Monster("E", 30, 150),
+                          Monster("F", 30, 100),
+                          Monster("G", 40, 300),
+                          Monster("H", 50, 200),
+                          Monster("I", 30, 250),
+                          Monster("J", 20, 150)]
     
     card_type = [Card(3.0),
-                Card(1.5),
-                Card(2.0),
-                Card(1.4),
-                Card(0.2),
-                Card(0.3),
-                Card(2.5),
-                Card(1.7),
-                Card(1.5),
-                Card(0.8)]
+                 Card(1.5),
+                 Card(2.0),
+                 Card(1.4),
+                 Card(0.2),
+                 Card(0.3),
+                 Card(2.5),
+                 Card(1.7),
+                 Card(1.5),
+                 Card(0.8)]
     
     print(title_text)
     ui = UI(monsters_available, card_type)
     ui.startGame()
-    
